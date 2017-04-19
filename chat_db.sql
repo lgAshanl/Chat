@@ -2,8 +2,6 @@
 
 -- DROP DATABASE test_db;
 
-DROP TABLE users, chats, chat_users, messages;
-
 CREATE TABLE users(
   user_id	SERIAL		PRIMARY KEY,
   name 		VARCHAR(60) 	NOT NULL DEFAULT '',
