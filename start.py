@@ -5,7 +5,8 @@ import argparse
 import logging
 
 from server import ChatServer
-from client import ChatClient
+#from client import ChatClient
+import client
 
 print("dasdas")
 logging.basicConfig(level=logging.DEBUG)
@@ -18,6 +19,7 @@ parser.add_argument('-s', '--addr', type=str, default='0.0.0.0')
 args = parser.parse_args()
 
 if args.client:
-	ChatClient(host=args.addr, port=args.port).start()
+	#ChatClient(host=args.addr, port=args.port).start()
+    client.start(host=args.addr, port=args.port)
 elif args.server:
 	ChatServer(host=args.addr, port=args.port).start()

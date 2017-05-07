@@ -18,7 +18,8 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='messages.proto',
   package='',
-  serialized_pb=_b('\n\x0emessages.proto\"\x81\x01\n\x0b\x43hatRequest\x12.\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x18.ChatRequest.CommandType\x12\x0f\n\x07message\x18\x02 \x01(\t\"1\n\x0b\x43ommandType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\"\x1f\n\x0c\x43hatResponse\x12\x0f\n\x07message\x18\x01 \x02(\t')
+  syntax='proto2',
+  serialized_pb=_b('\n\x0emessages.proto\"\xeb\x01\n\x0b\x43hatRequest\x12.\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x18.ChatRequest.CommandType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\x12\r\n\x05login\x18\x04 \x01(\t\x12\x0e\n\x06passwd\x18\x05 \x01(\t\x12\x0e\n\x06hidden\x18\x06 \x01(\x08\"X\n\x0b\x43ommandType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04\x12\x0b\n\x07LOG_OUT\x10\x05\"\xb3\x01\n\x0c\x43hatResponse\x12\x30\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x1a.ChatResponse.ResponseType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"L\n\x0cResponseType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -38,13 +39,55 @@ _CHATREQUEST_COMMANDTYPE = _descriptor.EnumDescriptor(
       name='GET_CLIENTS', index=1, number=2,
       options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SIGN_IN', index=2, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SIGN_UP', index=3, number=4,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='LOG_OUT', index=4, number=5,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=99,
-  serialized_end=148,
+  serialized_start=166,
+  serialized_end=254,
 )
 _sym_db.RegisterEnumDescriptor(_CHATREQUEST_COMMANDTYPE)
+
+_CHATRESPONSE_RESPONSETYPE = _descriptor.EnumDescriptor(
+  name='ResponseType',
+  full_name='ChatResponse.ResponseType',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='BROADCAST_MSG', index=0, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='GET_CLIENTS', index=1, number=2,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SIGN_IN', index=2, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='SIGN_UP', index=3, number=4,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=360,
+  serialized_end=436,
+)
+_sym_db.RegisterEnumDescriptor(_CHATRESPONSE_RESPONSETYPE)
 
 
 _CHATREQUEST = _descriptor.Descriptor(
@@ -62,9 +105,37 @@ _CHATREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='message', full_name='ChatRequest.message', index=1,
-      number=2, type=9, cpp_type=9, label=1,
+      name='successful', full_name='ChatRequest.successful', index=1,
+      number=2, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='message', full_name='ChatRequest.message', index=2,
+      number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='login', full_name='ChatRequest.login', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='passwd', full_name='ChatRequest.passwd', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='hidden', full_name='ChatRequest.hidden', index=5,
+      number=6, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -77,11 +148,12 @@ _CHATREQUEST = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=19,
-  serialized_end=148,
+  serialized_end=254,
 )
 
 
@@ -93,8 +165,22 @@ _CHATRESPONSE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='message', full_name='ChatResponse.message', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      name='command_type', full_name='ChatResponse.command_type', index=0,
+      number=1, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='successful', full_name='ChatResponse.successful', index=1,
+      number=2, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='message', full_name='ChatResponse.message', index=2,
+      number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -104,18 +190,22 @@ _CHATRESPONSE = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
+    _CHATRESPONSE_RESPONSETYPE,
   ],
   options=None,
   is_extendable=False,
+  syntax='proto2',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=150,
-  serialized_end=181,
+  serialized_start=257,
+  serialized_end=436,
 )
 
 _CHATREQUEST.fields_by_name['command_type'].enum_type = _CHATREQUEST_COMMANDTYPE
 _CHATREQUEST_COMMANDTYPE.containing_type = _CHATREQUEST
+_CHATRESPONSE.fields_by_name['command_type'].enum_type = _CHATRESPONSE_RESPONSETYPE
+_CHATRESPONSE_RESPONSETYPE.containing_type = _CHATRESPONSE
 DESCRIPTOR.message_types_by_name['ChatRequest'] = _CHATREQUEST
 DESCRIPTOR.message_types_by_name['ChatResponse'] = _CHATRESPONSE
 
