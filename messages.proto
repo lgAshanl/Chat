@@ -1,12 +1,31 @@
+syntax = "proto2";
+
 message ChatRequest {
     enum CommandType {
         BROADCAST_MSG = 1;
         GET_CLIENTS = 2;
+        SIGN_IN = 3;
+        SIGN_UP = 4;
+        LOG_OUT = 5;
+        ADD_CHAT = 6;
+        ADD_USERS_TO_CHAT = 7;
     }
     required CommandType command_type  = 1;
-    optional string message = 2;
+    required bool successful = 2;
+    optional string message = 3;
+    optional string login = 4;
+    optional string passwd = 5;
+    optional bool hidden = 6;
 }
 
 message ChatResponse {
-    required string message = 1;
+    enum ResponseType {
+        BROADCAST_MSG = 1;
+        GET_CLIENTS = 2;
+        SIGN_IN = 3;
+        SIGN_UP = 4;
+    }
+    required ResponseType command_type  = 1;
+    required bool successful = 2;
+    optional string message = 3;
 }

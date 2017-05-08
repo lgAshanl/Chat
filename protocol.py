@@ -4,11 +4,28 @@ STOP_BYTE = 0x26
 
 
 def recv_until_end_messages(sock):
+    return _recv_tool(sock, sock.recv)
+
+
+def qt_recv_until_end_messages(sock):
+    return _recv_tool(sock, sock.read)
+
+
+def send_message(sock, data):
+    _send_message_tool(sock.send, data=data)
+
+
+def qt_send_message(sock, data):
+    _send_message_tool(sock.writeData, data=data)
+    print("Sended ", data)
+
+
+def _recv_tool(sock, recv):
     data = bytearray()
     finish_receiving = False
 
     while not finish_receiving:
-        received_data = sock.recv(BUFFER_SIZE)
+        received_data = recv(BUFFER_SIZE)
 
         if not received_data: break
 
@@ -25,11 +42,11 @@ def recv_until_end_messages(sock):
     return bytes(data)
 
 
-def send_message(sock, data):
+def _send_message_tool(send, data):
     prepared_data = bytearray()
     for i in data:
         if i == SHIELDING_BYTE or i == STOP_BYTE:
             prepared_data.append(SHIELDING_BYTE)
         prepared_data.append(i)
     prepared_data.append(STOP_BYTE)
-    sock.send(prepared_data)
+    send(prepared_data)
