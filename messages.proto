@@ -7,11 +7,8 @@ message ChatRequest {
         SIGN_IN = 3;
         SIGN_UP = 4;
         LOG_OUT = 5;
-<<<<<<< HEAD
         ADD_CHAT = 6;
         ADD_USERS_TO_CHAT = 7;
-=======
->>>>>>> dev
     }
     required CommandType command_type  = 1;
     required bool successful = 2;

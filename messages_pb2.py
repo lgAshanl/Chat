@@ -19,11 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='messages.proto',
   package='',
   syntax='proto2',
-<<<<<<< HEAD
-  serialized_pb=_b('\n\x0emessages.proto\"\x8f\x02\n\x0b\x43hatRequest\x12.\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x18.ChatRequest.CommandType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\x12\r\n\x05login\x18\x04 \x01(\t\x12\x0e\n\x06passwd\x18\x05 \x01(\t\x12\x0e\n\x06hidden\x18\x06 \x01(\x08\"|\n\x0b\x43ommandType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04\x12\x0b\n\x07LOG_OUT\x10\x05\x12\x0c\n\x08\x41\x44\x44_CHAT\x10\x06\x12\x14\n\x10\x41\x44\x44_USER_TO_CHAT\x10\x07\"\xb3\x01\n\x0c\x43hatResponse\x12\x30\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x1a.ChatResponse.ResponseType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"L\n\x0cResponseType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04')
-=======
-  serialized_pb=_b('\n\x0emessages.proto\"\xeb\x01\n\x0b\x43hatRequest\x12.\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x18.ChatRequest.CommandType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\x12\r\n\x05login\x18\x04 \x01(\t\x12\x0e\n\x06passwd\x18\x05 \x01(\t\x12\x0e\n\x06hidden\x18\x06 \x01(\x08\"X\n\x0b\x43ommandType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04\x12\x0b\n\x07LOG_OUT\x10\x05\"\xb3\x01\n\x0c\x43hatResponse\x12\x30\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x1a.ChatResponse.ResponseType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"L\n\x0cResponseType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04')
->>>>>>> dev
+  serialized_pb=_b('\n\x0emessages.proto\"\x90\x02\n\x0b\x43hatRequest\x12.\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x18.ChatRequest.CommandType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\x12\r\n\x05login\x18\x04 \x01(\t\x12\x0e\n\x06passwd\x18\x05 \x01(\t\x12\x0e\n\x06hidden\x18\x06 \x01(\x08\"}\n\x0b\x43ommandType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04\x12\x0b\n\x07LOG_OUT\x10\x05\x12\x0c\n\x08\x41\x44\x44_CHAT\x10\x06\x12\x15\n\x11\x41\x44\x44_USERS_TO_CHAT\x10\x07\"\xb3\x01\n\x0c\x43hatResponse\x12\x30\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x1a.ChatResponse.ResponseType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"L\n\x0cResponseType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -55,26 +51,19 @@ _CHATREQUEST_COMMANDTYPE = _descriptor.EnumDescriptor(
       name='LOG_OUT', index=4, number=5,
       options=None,
       type=None),
-<<<<<<< HEAD
     _descriptor.EnumValueDescriptor(
       name='ADD_CHAT', index=5, number=6,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='ADD_USER_TO_CHAT', index=6, number=7,
+      name='ADD_USERS_TO_CHAT', index=6, number=7,
       options=None,
       type=None),
-=======
->>>>>>> dev
   ],
   containing_type=None,
   options=None,
   serialized_start=166,
-<<<<<<< HEAD
-  serialized_end=290,
-=======
-  serialized_end=254,
->>>>>>> dev
+  serialized_end=291,
 )
 _sym_db.RegisterEnumDescriptor(_CHATREQUEST_COMMANDTYPE)
 
@@ -103,13 +92,8 @@ _CHATRESPONSE_RESPONSETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-<<<<<<< HEAD
-  serialized_start=396,
-  serialized_end=472,
-=======
-  serialized_start=360,
-  serialized_end=436,
->>>>>>> dev
+  serialized_start=397,
+  serialized_end=473,
 )
 _sym_db.RegisterEnumDescriptor(_CHATRESPONSE_RESPONSETYPE)
 
@@ -177,11 +161,7 @@ _CHATREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=19,
-<<<<<<< HEAD
-  serialized_end=290,
-=======
-  serialized_end=254,
->>>>>>> dev
+  serialized_end=291,
 )
 
 
@@ -226,13 +206,8 @@ _CHATRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-<<<<<<< HEAD
-  serialized_start=293,
-  serialized_end=472,
-=======
-  serialized_start=257,
-  serialized_end=436,
->>>>>>> dev
+  serialized_start=294,
+  serialized_end=473,
 )
 
 _CHATREQUEST.fields_by_name['command_type'].enum_type = _CHATREQUEST_COMMANDTYPE

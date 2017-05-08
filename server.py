@@ -1,6 +1,6 @@
 import collections
 import socket
-import select, sys
+import select, sys, re
 from logging import info as log_info
 
 from messages_pb2 import ChatRequest, ChatResponse
@@ -13,10 +13,7 @@ class Client(object):
     def __init__(self, sock, addr):
         self.sock = sock
         self.addr = addr
-<<<<<<< HEAD
         self.id = None
-=======
->>>>>>> dev
 
     def __str__(self):
         return "Client({})".format(self.addr)
@@ -29,13 +26,9 @@ class ChatServer(object):
         self.connected_clients = []
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-<<<<<<< HEAD
             self.db = psycopg2.connect("dbname='chat_db' user='postgres' host='localhost' password='***'")
-=======
-            self.db = psycopg2.connect("dbname='test_db' user='postgres' host='localhost' password='***'")
->>>>>>> dev
             log_info("Connected to {dbname} as {user}, host: {host}".format(
-                dbname='test_db',
+                dbname='chat_db',
                 user='postgres',
                 host='localhost'
             ))
@@ -46,12 +39,8 @@ class ChatServer(object):
         self.connected_clients.append(client)
 
     def _unregister_and_close_client(self, client):
-<<<<<<< HEAD
         if client.id is not None:
             self._logout_user(client)
-=======
-        self._logout_user(client)
->>>>>>> dev
         self.connected_clients.remove(client)
         client.sock.close()
 
@@ -148,6 +137,11 @@ class ChatServer(object):
                             str(response.successful),
                             response.message
                         ))
+                    elif client.id is not None:
+                        if request.command_type == ChatRequest.ADD_CHAT:
+                            self._add_chat(client, request.message)
+                        elif request.command_type == ChatRequest.ADD_USERS_TO_CHAT:
+                            self._add_users_to_chat(client, request.message)
                     else:
                         log_info("shit")
                         exit(0)
@@ -192,6 +186,57 @@ class ChatServer(object):
                        "SET status = true, hidden = false "
                        "WHERE user_id = %s;",
                        (client.id,))
+
+    def _add_chat(self, client, arg):
+        chat_name = re.search(r'\w+', arg).group(0)
+        cursor = self.db.cursor()
+
+        cursor.execute("SELECT * FROM chats "
+                       "WHERE name = %s and admin_id = %s "
+                       "LIMIT 1;",
+                       (chat_name, client.id,))
+        rows = cursor.fetchall()
+        if not len(rows):
+            cursor.execute("INSERT INTO chats (admin_id, name) "
+                           "VALUES (%s, %s);",
+                           (client.id, chat_name,))
+            cursor.execute("SELECT * FROM chats "
+                           "WHERE name = %s and admin_id = %s "
+                           "LIMIT 1;",
+                           (chat_name, client.id,))
+            rows = cursor.fetchall()
+            cursor.execute("INSERT INTO chat_users (user_id, chat_id, hidden) "
+                           "VALUES (%s, %s, %s);",
+                           (client.id, rows[0][0], False))
+            self.db.commit()
+
+    def _add_users_to_chat(self, client, args):
+        names = re.findall(r'\w+', args)
+        chat_name = names[0]
+        names = names[1:]
+
+        cursor = self.db.cursor()
+
+        cursor.execute("SELECT chats.chat_id FROM chats INNER JOIN chat_users "
+                       "ON chats.chat_id = chat_users.chat_id "
+                       "WHERE name = %s and user_id = %s "
+                       "LIMIT 1;",
+                       (chat_name, client.id,))
+        rows = cursor.fetchall()
+        if len(rows):
+            chat_id = rows[0][0]
+            for user in names:
+                cursor.execute("SELECT user_id FROM users "
+                               "WHERE name = %s "
+                               "LIMIT 1;",
+                               (user,))
+                rows = cursor.fetchall()
+                user_id = rows[0][0]
+                cursor.execute("INSERT INTO chat_users (user_id, chat_id, hidden) "
+                               "VALUES (%s, %s, %s);",
+                               (user_id, chat_id, False))
+            self.db.commit()
+
 
 
     def start(self):
