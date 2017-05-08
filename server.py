@@ -13,7 +13,10 @@ class Client(object):
     def __init__(self, sock, addr):
         self.sock = sock
         self.addr = addr
+<<<<<<< HEAD
         self.id = None
+=======
+>>>>>>> dev
 
     def __str__(self):
         return "Client({})".format(self.addr)
@@ -26,7 +29,11 @@ class ChatServer(object):
         self.connected_clients = []
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
+<<<<<<< HEAD
             self.db = psycopg2.connect("dbname='chat_db' user='postgres' host='localhost' password='***'")
+=======
+            self.db = psycopg2.connect("dbname='test_db' user='postgres' host='localhost' password='***'")
+>>>>>>> dev
             log_info("Connected to {dbname} as {user}, host: {host}".format(
                 dbname='test_db',
                 user='postgres',
@@ -39,8 +46,12 @@ class ChatServer(object):
         self.connected_clients.append(client)
 
     def _unregister_and_close_client(self, client):
+<<<<<<< HEAD
         if client.id is not None:
             self._logout_user(client)
+=======
+        self._logout_user(client)
+>>>>>>> dev
         self.connected_clients.remove(client)
         client.sock.close()
 

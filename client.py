@@ -13,6 +13,7 @@ from messages_pb2 import ChatRequest, ChatResponse
 
 from logging import info as log_info
 
+<<<<<<< HEAD
 parts = [
     r'(/c)',                   #
     r'(?P<command>\w+)',       # command
@@ -20,6 +21,8 @@ parts = [
     r'(?P<args>[a-z,\s]*)'     # args
 ]
 pattern = re.compile(r'\s+'.join(parts)+r'\s*\Z')
+=======
+>>>>>>> dev
 
 class ChatClient(Ui_Dialog):
     def __init__(self, dialog,  host, port):
@@ -39,9 +42,12 @@ class ChatClient(Ui_Dialog):
 
         self.btn_sign_up.clicked.connect(self.sign_up)
         self.btn_sign_in.clicked.connect(self.sign_in)
+<<<<<<< HEAD
         # self.textEdit.installEventFilter(self)
         self.btn_send.clicked.connect(self.input_text)
 
+=======
+>>>>>>> dev
 
     def _gen_tab(self, tab_name):
         tab = QWidget()
@@ -77,6 +83,7 @@ class ChatClient(Ui_Dialog):
 
         log_info("Sended sing_up package")
 
+<<<<<<< HEAD
     def input_text(self):
         text = self.textEdit.toPlainText()
         # command = re.findall(r"/c \w+", text)
@@ -158,6 +165,48 @@ class ChatClient(Ui_Dialog):
             print("Disconnected from server")
             sys.exit()
 
+=======
+    def _logging(self):
+        request = ChatRequest()
+        request.command_type = ChatRequest.SIGN_IN
+        request.login = self.user_login
+        request.passwd = self.user_passwd
+        request.successful = True
+
+        qt_send_message(self.server_socket, request.SerializeToString())
+
+    def communication(self):
+        #data = self.server_socket.readAll()
+        data = qt_recv_until_end_messages(self.server_socket)
+        if data:
+            print(data)
+            response = ChatResponse()
+            response.ParseFromString(data)
+            print(response.message)
+            if response.message == "k doc":
+                self.dock_login.deleteLater()
+                self.dock_login = None
+            if response.message == "add":
+                self._gen_tab("test_tab")
+
+            if response.command_type == ChatResponse.SIGN_UP:
+                if response.successful:
+                    self._logging()
+                else:
+                    log_info("bad sing up")
+                    print(response.message)
+            elif response.command_type == ChatResponse.SIGN_UP:
+                if response.successful:
+                    log_info("")
+                else:
+                    log_info("bag sing in")
+                    print(response.message)
+
+        else:
+            print("Disconnected from server")
+            sys.exit()
+
+>>>>>>> dev
     def display_error(self, socket_error):
         if socket_error == QAbstractSocket.RemoteHostClosedError:
             pass
