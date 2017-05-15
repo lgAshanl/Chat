@@ -12,11 +12,15 @@ CREATE TABLE users(
   password	VARCHAR(18)	NOT NULL
 );
 
+CREATE UNIQUE INDEX username_idx ON users (name);
+
 CREATE TABLE chats(
   chat_id	SERIAL		PRIMARY KEY,
   admin_id 	INTEGER 	NOT NULL DEFAULT 0,
   name		VARCHAR(666) 	NOT NULL DEFAULT 'Chat'
 );
+
+CREATE UNIQUE INDEX cahtname_idx ON chats (name);
 
 CREATE TABLE chat_users(
   user_id	INTEGER		NOT NULL REFERENCES users (user_id),
@@ -26,8 +30,7 @@ CREATE TABLE chat_users(
 
 CREATE TABLE answers(
   answer_id	SERIAL		PRIMARY KEY,
-  to_id		INTEGER		NOT NULL REFERENCES users (user_id),
-  text		VARCHAR(666)	NOT NULL DEFAULT '__ANSWER__'
+  to_id		INTEGER		NOT NULL
 );
 
 CREATE TABLE files(
@@ -39,8 +42,8 @@ CREATE TABLE files(
 CREATE TABLE messages(
   message_id	SERIAL		PRIMARY KEY,
   chat_id	INTEGER		NOT NULL REFERENCES chats (chat_id),
-  ip		INTEGER 	NOT NULL,
-  from_id	INTEGER		NOT NULL,
+  ip		VARCHAR(666) 	NOT NULL,
+  from_id	INTEGER		NOT NULL REFERENCES users (user_id),
   time		TIMESTAMP 	without time zone NOT NULL,
   tag		VARCHAR(7) 	NOT NULL CHECK(
 				  tag = 'message' OR
@@ -55,6 +58,5 @@ CREATE TABLE messages(
 
 CREATE TABLE deleted_messages(
   user_id	INTEGER		NOT NULL REFERENCES users (user_id),
-  chat_id 	INTEGER 	NOT NULL REFERENCES chats (chat_id),
   message_id	INTEGER		NOT NULL REFERENCES messages (message_id)
 );
