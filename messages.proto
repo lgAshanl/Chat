@@ -4,6 +4,7 @@ message ChatRequest {
     enum CommandType {
         MSG = 1;
         GET_CLIENTS = 2;
+<<<<<<< HEAD
         //GET_CHATS = 3;
         //GET_MESSAGES = 4;
         GET_CHATS_AND_MESSAGES = 5;
@@ -14,6 +15,13 @@ message ChatRequest {
         ADD_USERS_TO_CHAT = 10;
         BROADCAST_MSG = 11;
         DELETE_MSG = 12;
+=======
+        SIGN_IN = 3;
+        SIGN_UP = 4;
+        LOG_OUT = 5;
+        ADD_CHAT = 6;
+        ADD_USERS_TO_CHAT = 7;
+>>>>>>> dev
     }
     message Message {
         required int64  chat_id     = 1;

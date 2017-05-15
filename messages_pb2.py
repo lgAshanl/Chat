@@ -19,7 +19,11 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='messages.proto',
   package='',
   syntax='proto2',
+<<<<<<< HEAD
   serialized_pb=_b('\n\x0emessages.proto\"\xe3\x03\n\x0b\x43hatRequest\x12.\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x18.ChatRequest.CommandType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x11\n\tinfo_text\x18\x03 \x01(\t\x12\x1f\n\x04sign\x18\x04 \x01(\x0b\x32\x11.ChatRequest.Sign\x12%\n\x07message\x18\x05 \x01(\x0b\x32\x14.ChatRequest.Message\x1aI\n\x07Message\x12\x0f\n\x07\x63hat_id\x18\x01 \x02(\x03\x12\x0c\n\x04text\x18\x02 \x02(\t\x12\x11\n\tanswer_id\x18\x03 \x01(\x03\x12\x0c\n\x04\x66ile\x18\x05 \x01(\t\x1a\x35\n\x04Sign\x12\r\n\x05login\x18\x01 \x02(\t\x12\x0e\n\x06passwd\x18\x02 \x02(\t\x12\x0e\n\x06hidden\x18\x03 \x02(\x08\"\xb2\x01\n\x0b\x43ommandType\x12\x07\n\x03MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x1a\n\x16GET_CHATS_AND_MESSAGES\x10\x05\x12\x0b\n\x07SIGN_IN\x10\x06\x12\x0b\n\x07SIGN_UP\x10\x07\x12\x0b\n\x07LOG_OUT\x10\x08\x12\x0c\n\x08\x41\x44\x44_CHAT\x10\t\x12\x15\n\x11\x41\x44\x44_USERS_TO_CHAT\x10\n\x12\x11\n\rBROADCAST_MSG\x10\x0b\x12\x0e\n\nDELETE_MSG\x10\x0c\"\xfa\x03\n\x0c\x43hatResponse\x12\x30\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x1a.ChatResponse.ResponseType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\x12!\n\x05\x63hats\x18\x04 \x03(\x0b\x32\x12.ChatResponse.Chat\x12\'\n\x08messages\x18\x05 \x03(\x0b\x32\x15.ChatResponse.Message\x1a\x9f\x01\n\x07Message\x12\x12\n\nmessage_id\x18\x01 \x02(\x03\x12\x0f\n\x07\x63hat_id\x18\x02 \x02(\x03\x12\x11\n\tfrom_name\x18\x03 \x02(\t\x12\x0c\n\x04time\x18\x04 \x02(\t\x12\x0b\n\x03tag\x18\x05 \x02(\t\x12\x0c\n\x04text\x18\x06 \x02(\t\x12%\n\x06\x61nswer\x18\x07 \x01(\x0b\x32\x15.ChatResponse.Message\x12\x0c\n\x04\x66ile\x18\x08 \x01(\t\x1a*\n\x04\x43hat\x12\x11\n\tchat_name\x18\x01 \x02(\t\x12\x0f\n\x07\x63hat_id\x18\x02 \x02(\x03\"y\n\x0cResponseType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0b\n\x07\x43LIENTS\x10\x02\x12\x16\n\x12\x43HATS_AND_MESSAGES\x10\x03\x12\t\n\x05\x43HATS\x10\x04\x12\x0c\n\x08MESSAGES\x10\x05\x12\x0b\n\x07SIGN_IN\x10\x06\x12\x0b\n\x07SIGN_UP\x10\x07')
+=======
+  serialized_pb=_b('\n\x0emessages.proto\"\x90\x02\n\x0b\x43hatRequest\x12.\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x18.ChatRequest.CommandType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\x12\r\n\x05login\x18\x04 \x01(\t\x12\x0e\n\x06passwd\x18\x05 \x01(\t\x12\x0e\n\x06hidden\x18\x06 \x01(\x08\"}\n\x0b\x43ommandType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04\x12\x0b\n\x07LOG_OUT\x10\x05\x12\x0c\n\x08\x41\x44\x44_CHAT\x10\x06\x12\x15\n\x11\x41\x44\x44_USERS_TO_CHAT\x10\x07\"\xb3\x01\n\x0c\x43hatResponse\x12\x30\n\x0c\x63ommand_type\x18\x01 \x02(\x0e\x32\x1a.ChatResponse.ResponseType\x12\x12\n\nsuccessful\x18\x02 \x02(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"L\n\x0cResponseType\x12\x11\n\rBROADCAST_MSG\x10\x01\x12\x0f\n\x0bGET_CLIENTS\x10\x02\x12\x0b\n\x07SIGN_IN\x10\x03\x12\x0b\n\x07SIGN_UP\x10\x04')
+>>>>>>> dev
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -68,14 +72,23 @@ _CHATREQUEST_COMMANDTYPE = _descriptor.EnumDescriptor(
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
+<<<<<<< HEAD
       name='DELETE_MSG', index=9, number=12,
+=======
+      name='ADD_USERS_TO_CHAT', index=6, number=7,
+>>>>>>> dev
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
+<<<<<<< HEAD
   serialized_start=324,
   serialized_end=502,
+=======
+  serialized_start=166,
+  serialized_end=291,
+>>>>>>> dev
 )
 _sym_db.RegisterEnumDescriptor(_CHATREQUEST_COMMANDTYPE)
 
@@ -116,8 +129,13 @@ _CHATRESPONSE_RESPONSETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
+<<<<<<< HEAD
   serialized_start=890,
   serialized_end=1011,
+=======
+  serialized_start=397,
+  serialized_end=473,
+>>>>>>> dev
 )
 _sym_db.RegisterEnumDescriptor(_CHATRESPONSE_RESPONSETYPE)
 
@@ -352,8 +370,13 @@ _CHATRESPONSE_MESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
+<<<<<<< HEAD
   serialized_start=685,
   serialized_end=844,
+=======
+  serialized_start=19,
+  serialized_end=291,
+>>>>>>> dev
 )
 
 _CHATRESPONSE_CHAT = _descriptor.Descriptor(
@@ -448,8 +471,13 @@ _CHATRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
+<<<<<<< HEAD
   serialized_start=505,
   serialized_end=1011,
+=======
+  serialized_start=294,
+  serialized_end=473,
+>>>>>>> dev
 )
 
 _CHATREQUEST_MESSAGE.containing_type = _CHATREQUEST
