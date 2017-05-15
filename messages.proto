@@ -2,30 +2,69 @@ syntax = "proto2";
 
 message ChatRequest {
     enum CommandType {
-        BROADCAST_MSG = 1;
+        MSG = 1;
         GET_CLIENTS = 2;
-        SIGN_IN = 3;
-        SIGN_UP = 4;
-        LOG_OUT = 5;
-        ADD_CHAT = 6;
-        ADD_USERS_TO_CHAT = 7;
+        //GET_CHATS = 3;
+        //GET_MESSAGES = 4;
+        GET_CHATS_AND_MESSAGES = 5;
+        SIGN_IN = 6;
+        SIGN_UP = 7;
+        LOG_OUT = 8;
+        ADD_CHAT = 9;
+        ADD_USERS_TO_CHAT = 10;
+        BROADCAST_MSG = 11;
+        DELETE_MSG = 12;
     }
-    required CommandType command_type  = 1;
-    required bool successful = 2;
-    optional string message = 3;
-    optional string login = 4;
-    optional string passwd = 5;
-    optional bool hidden = 6;
+    message Message {
+        required int64  chat_id     = 1;
+        required string text 	    = 2;
+        optional int64  answer_id  	= 3;
+        //optional string answer_text = 4;
+        optional string file 	    = 5;
+    }
+    message Sign {
+        required string login 		= 1;
+        required string passwd 		= 2;
+        required bool   hidden 		= 3;
+    }
+
+    required CommandType    command_type    = 1;
+    required bool           successful 		= 2;
+    optional string         info_text       = 3;
+    optional Sign           sign            = 4;
+    optional Message        message         = 5;
+
 }
 
 message ChatResponse {
     enum ResponseType {
-        BROADCAST_MSG = 1;
-        GET_CLIENTS = 2;
-        SIGN_IN = 3;
-        SIGN_UP = 4;
+        BROADCAST_MSG       = 1;
+        CLIENTS             = 2;
+        CHATS_AND_MESSAGES  = 3;
+        CHATS               = 4;
+        MESSAGES            = 5;
+        SIGN_IN             = 6;
+        SIGN_UP             = 7;
     }
+    message Message {
+        required int64  message_id 	= 1;
+        required int64  chat_id 	= 2;
+        required string from_name 	= 3;
+        required string time 		= 4;
+        required string tag 		= 5;
+        required string text 		= 6;
+        optional Message answer 		= 7;
+        optional string file 		= 8;
+    }
+    message Chat {
+        required string chat_name 	= 1;
+        required int64  chat_id 	= 2;
+    }
+
     required ResponseType command_type  = 1;
-    required bool successful = 2;
-    optional string message = 3;
+    required bool successful 			= 2;
+    optional string message 			= 3;
+
+    repeated Chat chats 				= 4;
+	repeated Message messages 			= 5;
 }

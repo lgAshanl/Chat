@@ -17,7 +17,6 @@ def send_message(sock, data):
 
 def qt_send_message(sock, data):
     _send_message_tool(sock.writeData, data=data)
-    print("Sended ", data)
 
 
 def _recv_tool(sock, recv):
