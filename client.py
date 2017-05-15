@@ -20,10 +20,7 @@ parts = [
     r'(?P<args>[a-z, \_ ,\s]*)'     # args
 ]
 pattern = re.compile(r'\s+'.join(parts)+r'\s*\Z')
-<<<<<<< HEAD
 
-=======
->>>>>>> dev
 
 class ChatClient(Ui_Dialog):
     def __init__(self, dialog,  host, port):
@@ -47,13 +44,9 @@ class ChatClient(Ui_Dialog):
         self.btn_sign_in.clicked.connect(self.sign_in)
         # self.textEdit.installEventFilter(self)
         self.btn_send.clicked.connect(self.input_text)
+        self._print_man()
 
-<<<<<<< HEAD
     def _gen_tab(self, tab_name, chat_id):
-=======
-
-    def _gen_tab(self, tab_name):
->>>>>>> dev
         tab = QWidget()
         tab.setObjectName(tab_name)
         tab.textBrowser = QTextBrowser(tab)
@@ -100,11 +93,7 @@ class ChatClient(Ui_Dialog):
                     else:
                         self.textBrowser.setText("insert name of chat")
                 elif user_input["command"] == "add_users":
-<<<<<<< HEAD
                     if user_input["arg"] and user_input["args"]:
-=======
-                    if user_input["arg"]:
->>>>>>> dev
                         self._add_users_to_chat(user_input["arg"]+" "+user_input["args"])
                     else:
                         self.textBrowser.setText("insert chat name and users' names")
@@ -125,7 +114,6 @@ class ChatClient(Ui_Dialog):
                 else:
                     self.textBrowser.setText("unknown command")
             else:
-                # self.textBrowser.append("insert command")
                 self.textBrowser.setText("insert command")
         else:
             current_tab_index = self.tabWidget.currentIndex()
@@ -133,6 +121,19 @@ class ChatClient(Ui_Dialog):
             if current_tab_index:
                 chat_id = current_tab.chat_id
                 self._send_message(text, chat_id)
+                self.textEdit.setText("")
+            else:
+                self._print_man()
+
+    def _print_man(self):
+        self.textBrowser.setText("Man:\n"
+                                 "Commands:\n"
+                                 "\t'/c add_chat <chat_name>'\n"
+                                 "\t'/c add_users <chat_name> <name1> <name2> <name2> ...'\n"
+                                 "\t'/c answer <message_id> <text_of_answer>\n"
+                                 "\t'/c delete_msg <message_id>'\n"
+                                 "\nIf you want message, just choose tab of chat, "
+                                 "write text of message and push btn 'Send'\n")
 
     def _add_chat(self, chat_name):
         request = ChatRequest()
@@ -151,6 +152,7 @@ class ChatClient(Ui_Dialog):
     def _get_chats_and_users(self):
         request = ChatRequest()
         request.command_type = ChatRequest.GET_CHATS_AND_MESSAGES
+        request.info_text = '5'
         request.successful = True
         qt_send_message(self.server_socket, request.SerializeToString())
 
@@ -161,7 +163,6 @@ class ChatClient(Ui_Dialog):
         request.sign.passwd = self.user_passwd
         request.sign.hidden = self.user_hidden
         request.successful = True
-<<<<<<< HEAD
         qt_send_message(self.server_socket, request.SerializeToString())
 
     def _send_message(self, text, chat_id):
@@ -186,8 +187,6 @@ class ChatClient(Ui_Dialog):
         request.command_type = ChatRequest.DELETE_MSG
         request.info_text = msg_id
         request.successful = True
-=======
->>>>>>> dev
         qt_send_message(self.server_socket, request.SerializeToString())
 
     def communication(self):
@@ -235,7 +234,6 @@ class ChatClient(Ui_Dialog):
             print("Disconnected from server")
             sys.exit()
 
-<<<<<<< HEAD
     def _gui_add_chats(self, chats):
         for chat in chats:
             self.chats_dict.update({chat.chat_id: self._gen_tab(chat.chat_name, chat.chat_id)})
@@ -267,8 +265,6 @@ class ChatClient(Ui_Dialog):
         if shift == 0:
             tab.textBrowser.append("")
 
-=======
->>>>>>> dev
     def display_error(self, socket_error):
         if socket_error == QAbstractSocket.RemoteHostClosedError:
             pass

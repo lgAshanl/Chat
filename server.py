@@ -150,7 +150,6 @@ class ChatServer(object):
                         ))
                     elif client.id is not None:
                         if request.command_type == ChatRequest.ADD_CHAT:
-<<<<<<< HEAD
                             self._add_chat(client, request.info_text)
                         elif request.command_type == ChatRequest.ADD_USERS_TO_CHAT:
                             self._add_users_to_chat(client, request.info_text)
@@ -158,7 +157,11 @@ class ChatServer(object):
                             response = ChatResponse()
                             response.command_type = ChatResponse.CHATS_AND_MESSAGES
                             self._get_chats_to_response(client, response.chats)
-                            self._get_messages_to_response(response.messages, client.id)
+                            if request.info_text != '' and request.info_text.isdigit():
+                                limit = int(request.info_text)
+                            else:
+                                limit = 10
+                            self._get_messages_to_response(response.messages, limit, client_id=client.id)
                             response.successful = True
                             self._send_message_to_client(client, response.SerializeToString())
                         elif request.command_type == ChatRequest.MSG:
@@ -168,15 +171,10 @@ class ChatServer(object):
                         else:
                             log_info("shit")
                     elif client.id is None:
-                        self._get_messages_by_chats([])
+                        # self._get_messages_by_chats([])
                         log_info("Client {client}: ohuel".format(
                             client=client,
                         ))
-=======
-                            self._add_chat(client, request.message)
-                        elif request.command_type == ChatRequest.ADD_USERS_TO_CHAT:
-                            self._add_users_to_chat(client, request.message)
->>>>>>> dev
                     else:
                         log_info("shit")
                         exit(0)
@@ -268,6 +266,8 @@ class ChatServer(object):
                                "LIMIT 1;",
                                (user,))
                 rows = cursor.fetchall()
+                if len(rows) == 0:
+                    continue
                 user_id = rows[0][0]
                 cursor.execute("INSERT INTO chat_users (user_id, chat_id, hidden) "
                                "VALUES (%s, %s, %s);",
@@ -317,7 +317,7 @@ class ChatServer(object):
         rows = cursor.fetchall()
         return rows[0][0]
 
-    def _get_messages_by_chats(self, chats):
+    def _get_messages_by_chats(self, chats, limit):
         chats = tuple(chats)
         chat_ids = []
         for x in chats:
@@ -325,6 +325,12 @@ class ChatServer(object):
         chat_ids = tuple(chat_ids)
         if not chat_ids:
             return []
+        rows = []
+        for x in chat_ids:
+            rows += self._get_messages_by_chat(x, limit)
+        return rows
+
+    def _get_messages_by_chat(self, chat_id, limit):
         cursor = self.db.cursor()
         cursor.execute("SELECT 	messages.message_id, chats.chat_id AS chat, users.name AS author, "
                        "        time, tag, text, answer_id, file_id "
@@ -333,11 +339,15 @@ class ChatServer(object):
                        "    ON chats.chat_id = messages.chat_id "
                        "INNER JOIN users "
                        "    ON users.user_id = messages.from_id "
-                       "WHERE chats.chat_id IN %s "
-                       "ORDER BY time;",
-                       (chat_ids,))
+                       "WHERE chats.chat_id = %s "
+                       "ORDER BY time DESC "
+                       "LIMIT %s;",
+                       (chat_id, limit,))
         rows = cursor.fetchall()
-        return rows
+        true_rows = []
+        for i in range(len(rows)-1, 0, -1):
+            true_rows.append(rows[i])
+        return true_rows
 
     def _get_users_by_chat(self, chat_id):
         cursor = self.db.cursor()
@@ -369,12 +379,12 @@ class ChatServer(object):
             return message_id
         return -1
 
-    def _get_messages_to_response(self, response_messages, client_id=0, chats=None):
+    def _get_messages_to_response(self, response_messages, limit, client_id=0, chats=None):
         deleted_msg = set()
         if chats is None:
             chats = self._get_chats_by_id(client_id)
             deleted_msg = self._get_set_of_deleted_messages(client_id)
-        for x in self._get_messages_by_chats(chats):
+        for x in self._get_messages_by_chats(chats, limit):
             if x[0] in deleted_msg:
                 continue
             mes = response_messages.add()
@@ -481,7 +491,6 @@ class ChatServer(object):
         response.successful = True
         return response
 
-<<<<<<< HEAD
     def _add_message_to_db(self, message):
         cursor = self.db.cursor()
         cursor.execute("INSERT INTO messages (chat_id, ip, from_id, "
@@ -548,65 +557,12 @@ class ChatServer(object):
         rows = cursor.fetchall()
         chat_name = rows[0][0]
         response = self._preparing_chat_for_response(chat_id, chat_name)
-        self._get_messages_to_response(response.messages, chats=[[chat_id]])
+        self._get_messages_to_response(response.messages, 10, chats=[[chat_id]])
         response = response.SerializeToString()
         for client in self.connected_clients:
             if client.id == user_id:
                 self._send_message_to_client(client, response)
                 break
-=======
-    def _add_chat(self, client, arg):
-        chat_name = re.search(r'\w+', arg).group(0)
-        cursor = self.db.cursor()
-
-        cursor.execute("SELECT * FROM chats "
-                       "WHERE name = %s and admin_id = %s "
-                       "LIMIT 1;",
-                       (chat_name, client.id,))
-        rows = cursor.fetchall()
-        if not len(rows):
-            cursor.execute("INSERT INTO chats (admin_id, name) "
-                           "VALUES (%s, %s);",
-                           (client.id, chat_name,))
-            cursor.execute("SELECT * FROM chats "
-                           "WHERE name = %s and admin_id = %s "
-                           "LIMIT 1;",
-                           (chat_name, client.id,))
-            rows = cursor.fetchall()
-            cursor.execute("INSERT INTO chat_users (user_id, chat_id, hidden) "
-                           "VALUES (%s, %s, %s);",
-                           (client.id, rows[0][0], False))
-            self.db.commit()
-
-    def _add_users_to_chat(self, client, args):
-        names = re.findall(r'\w+', args)
-        chat_name = names[0]
-        names = names[1:]
-
-        cursor = self.db.cursor()
-
-        cursor.execute("SELECT chats.chat_id FROM chats INNER JOIN chat_users "
-                       "ON chats.chat_id = chat_users.chat_id "
-                       "WHERE name = %s and user_id = %s "
-                       "LIMIT 1;",
-                       (chat_name, client.id,))
-        rows = cursor.fetchall()
-        if len(rows):
-            chat_id = rows[0][0]
-            for user in names:
-                cursor.execute("SELECT user_id FROM users "
-                               "WHERE name = %s "
-                               "LIMIT 1;",
-                               (user,))
-                rows = cursor.fetchall()
-                user_id = rows[0][0]
-                cursor.execute("INSERT INTO chat_users (user_id, chat_id, hidden) "
-                               "VALUES (%s, %s, %s);",
-                               (user_id, chat_id, False))
-            self.db.commit()
-
-
->>>>>>> dev
 
     def start(self):
         self.server_sock.bind((self.host, self.port))
