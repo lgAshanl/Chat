@@ -1,11 +1,12 @@
-import sys, re
+import sys
+import re
 import socket
 import select
 import time
 #from graph.entry import Ui_entry
 from gui.Window import Ui_Dialog
 from PyQt5.QtCore import QDataStream, QIODevice, QRect
-from PyQt5.QtWidgets import * # import QApplication, QDialog, QWidget
+from PyQt5.QtWidgets import *  # import QApplication, QDialog, QWidget
 from PyQt5.QtNetwork import QTcpSocket, QAbstractSocket
 
 from protocol import qt_send_message, qt_recv_until_end_messages
@@ -19,11 +20,11 @@ parts = [
     r'(?P<arg>\w*)',           # arg
     r'(?P<args>[a-z, \_ ,\s]*)'     # args
 ]
-pattern = re.compile(r'\s+'.join(parts)+r'\s*\Z')
+pattern = re.compile(r'\s+'.join(parts) + r'\s*\Z')
 
 
 class ChatClient(Ui_Dialog):
-    def __init__(self, dialog,  host, port):
+    def __init__(self, dialog, host, port):
         super().__init__()
         self.setupUi(dialog)
         self.server_socket = QTcpSocket(dialog)
@@ -34,9 +35,8 @@ class ChatClient(Ui_Dialog):
         self.chats_dict = {}
         self.user_hidden = False
 
-        self.server_socket.connectToHost(self.host, self.port, QIODevice.ReadWrite)
-        # self.server_socket.waitForConnected(1000)
-        # send any message you like it could come from a widget text.
+        self.server_socket.connectToHost(
+            self.host, self.port, QIODevice.ReadWrite)
         self.server_socket.readyRead.connect(self.communication)
         self.server_socket.error.connect(self.display_error)
 
@@ -51,7 +51,7 @@ class ChatClient(Ui_Dialog):
         tab.setObjectName(tab_name)
         tab.textBrowser = QTextBrowser(tab)
         tab.textBrowser.setGeometry(QRect(0, 0, 671, 241))
-        tab.textBrowser.setObjectName(tab_name+"_tb")
+        tab.textBrowser.setObjectName(tab_name + "_tb")
         tab.chat_id = chat_id
         return self.tabWidget.addTab(tab, tab_name)
 
@@ -82,37 +82,11 @@ class ChatClient(Ui_Dialog):
         text = self.textEdit.toPlainText()
         # command = re.findall(r"/c \w+", text)
         global pattern
-        user_input = pattern.match(text+" ")
+        user_input = pattern.match(text + " ")
 
         if text[0:2] == "/c":
             if user_input is not None:
-                user_input.groupdict()
-                if user_input["command"] == "add_chat":
-                    if user_input["arg"]:
-                        self._add_chat(user_input["arg"])
-                    else:
-                        self.textBrowser.setText("insert name of chat")
-                elif user_input["command"] == "add_users":
-                    if user_input["arg"] and user_input["args"]:
-                        self._add_users_to_chat(user_input["arg"]+" "+user_input["args"])
-                    else:
-                        self.textBrowser.setText("insert chat name and users' names")
-                elif user_input["command"] == "answer":
-                    if user_input["arg"] and user_input["args"]:
-                        current_tab_index = self.tabWidget.currentIndex()
-                        current_tab = self.tabWidget.widget(current_tab_index)
-                        if current_tab_index:
-                            chat_id = current_tab.chat_id
-                            self._send_answer(chat_id, int(user_input["arg"]), user_input["args"])
-                    else:
-                        self.textBrowser.setText("insert message_id and text")
-                elif user_input["command"] == "delete_msg":
-                    if int(user_input["arg"]):
-                        self._send_delete_msg(user_input["arg"])
-                    else:
-                        self.textBrowser.setText("insert valid message_id")
-                else:
-                    self.textBrowser.setText("unknown command")
+                self._run_command(user_input)
             else:
                 self.textBrowser.setText("insert command")
         else:
@@ -125,15 +99,49 @@ class ChatClient(Ui_Dialog):
             else:
                 self._print_man()
 
+    def _run_command(self, user_input):
+        user_input.groupdict()
+        if user_input["command"] == "add_chat":
+            if user_input["arg"]:
+                self._add_chat(user_input["arg"])
+            else:
+                self.textBrowser.setText("insert name of chat")
+        elif user_input["command"] == "add_users":
+            if user_input["arg"] and user_input["args"]:
+                self._add_users_to_chat(
+                    user_input["arg"] + " " + user_input["args"])
+            else:
+                self.textBrowser.setText(
+                    "insert chat name and users' names")
+        elif user_input["command"] == "answer":
+            if user_input["arg"] and user_input["args"]:
+                current_tab_index = self.tabWidget.currentIndex()
+                current_tab = self.tabWidget.widget(current_tab_index)
+                if current_tab_index:
+                    chat_id = current_tab.chat_id
+                    self._send_answer(
+                        chat_id, int(
+                            user_input["arg"]), user_input["args"])
+            else:
+                self.textBrowser.setText("insert message_id and text")
+        elif user_input["command"] == "delete_msg":
+            if int(user_input["arg"]):
+                self._send_delete_msg(user_input["arg"])
+            else:
+                self.textBrowser.setText("insert valid message_id")
+        else:
+            self.textBrowser.setText("unknown command")
+
     def _print_man(self):
-        self.textBrowser.setText("Man:\n"
-                                 "Commands:\n"
-                                 "\t'/c add_chat <chat_name>'\n"
-                                 "\t'/c add_users <chat_name> <name1> <name2> <name2> ...'\n"
-                                 "\t'/c answer <message_id> <text_of_answer>\n"
-                                 "\t'/c delete_msg <message_id>'\n"
-                                 "\nIf you want message, just choose tab of chat, "
-                                 "write text of message and push btn 'Send'\n")
+        self.textBrowser.setText(
+            "Man:\n"
+            "Commands:\n"
+            "\t'/c add_chat <chat_name>'\n"
+            "\t'/c add_users <chat_name> <name1> <name2> <name2> ...'\n"
+            "\t'/c answer <message_id> <text_of_answer>\n"
+            "\t'/c delete_msg <message_id>'\n"
+            "\nIf you want message, just choose tab of chat, "
+            "write text of message and push btn 'Send'\n")
 
     def _add_chat(self, chat_name):
         request = ChatRequest()
@@ -189,6 +197,25 @@ class ChatClient(Ui_Dialog):
         request.successful = True
         qt_send_message(self.server_socket, request.SerializeToString())
 
+    def _communication_logging(self, response):
+        if response.command_type == ChatResponse.SIGN_UP:
+            if response.successful:
+                print("regged")
+                self._logging()
+            else:
+                log_info("bad sing up")
+                print("not regged")
+            return True
+        elif response.command_type == ChatResponse.SIGN_IN:
+            if response.successful:
+                print("logged")
+                self._get_chats_and_users()
+            else:
+                print("not logged")
+                log_info("bag sing in")
+            return True
+        return False
+
     def communication(self):
         # data = self.server_socket.readAll()
         data = qt_recv_until_end_messages(self.server_socket)
@@ -199,26 +226,9 @@ class ChatClient(Ui_Dialog):
             ))
             response = ChatResponse()
             response.ParseFromString(data)
-            if response.message == "k doc":
-                self.dock_login.deleteLater()
-                self.dock_login = None
-            if response.message == "add":
-                self._gen_tab("test_tab")
 
-            if response.command_type == ChatResponse.SIGN_UP:
-                if response.successful:
-                    print("regged")
-                    self._logging()
-                else:
-                    log_info("bad sing up")
-                    print("not regged")
-            elif response.command_type == ChatResponse.SIGN_IN:
-                if response.successful:
-                    print("logged")
-                    self._get_chats_and_users()
-                else:
-                    print("not logged")
-                    log_info("bag sing in")
+            if self._communication_logging(response):
+                return
             elif response.command_type == ChatResponse.CHATS_AND_MESSAGES:
                 self._gui_add_chats(response.chats)
                 self._gui_add_messages(response.messages)
@@ -236,7 +246,8 @@ class ChatClient(Ui_Dialog):
 
     def _gui_add_chats(self, chats):
         for chat in chats:
-            self.chats_dict.update({chat.chat_id: self._gen_tab(chat.chat_name, chat.chat_id)})
+            self.chats_dict.update(
+                {chat.chat_id: self._gen_tab(chat.chat_name, chat.chat_id)})
 
     def _gui_add_messages(self, messages):
         for message in messages:
@@ -251,8 +262,6 @@ class ChatClient(Ui_Dialog):
             message.from_name,
             message.time,
             message.message_id)
-        # if message.answer.message_id != 0:
-        #   text += tabulation + "\nAnswer to "
         if message.file != '':
             text += tabulation + "\nFile to "
         text += "\n{}{}".format(tabulation, message.text)
@@ -261,7 +270,7 @@ class ChatClient(Ui_Dialog):
         if message.answer.message_id != 0:
             text = tabulation + "Answer to "
             tab.textBrowser.append(text)
-            self._print_message(message.answer, shift+8, tab)
+            self._print_message(message.answer, shift + 8, tab)
         if shift == 0:
             tab.textBrowser.append("")
 
@@ -269,7 +278,9 @@ class ChatClient(Ui_Dialog):
         if socket_error == QAbstractSocket.RemoteHostClosedError:
             pass
         else:
-            print(self, "The following error occurred: %s." % self.server_socket.errorString())
+            print(
+                self, "The following error occurred: %s." %
+                self.server_socket.errorString())
 
 
 def start(host, port):
@@ -278,6 +289,6 @@ def start(host, port):
     app = QApplication(sys.argv)
     dialog = QDialog()
     client = ChatClient(dialog, host, port)
-    #client.setupUi(dialog)
+    # client.setupUi(dialog)
     dialog.show()
     app.exec_()
